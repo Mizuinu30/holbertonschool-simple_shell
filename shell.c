@@ -13,7 +13,7 @@ char **tokenize(char *line)
 {
 	char **tokens = (char **)malloc(MAX_NUM_TOKENS * sizeof(char *));
 	char *token = (char *)malloc(MAX_TOKEN_SIZE * sizeof(char));
-	int i, tokenIndex = 0, tokenNo = 0;
+	long unsigned int i, tokenIndex = 0, tokenNo = 0;
 
 	for (i = 0; i < strlen(line); i++)
 	{
@@ -47,10 +47,11 @@ int main(void)
 	pid_t child_pid;
 	int status;
 	int i;
+	char *args[MAX_NUM_TOKENS];
 
 	while (1)
 	{
-		printf("simple_shell> ");
+		printf("$");
 		if (fgets(input, sizeof(input), stdin) == NULL)
 		{
 			printf("\n");
@@ -66,13 +67,12 @@ int main(void)
 		else if (child_pid == 0)
 		{
 			tokens = tokenize(input);
-			char *args[MAX_NUM_TOKENS];
 			for (i = 0; tokens[i] != NULL; i++)
 			{
 				args[i] = tokens[i];
 			}
 			args[i] = NULL;
-			if (execvp(args[0], args) == -1)
+			if (execve(args[0], args) == -1)
 			{
 				perror("Command execution failed");
 				exit(EXIT_FAILURE);
