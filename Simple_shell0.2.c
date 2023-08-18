@@ -6,9 +6,10 @@
 #include <string.h>
 
 /**
- * commandExists - 
- * @command:
- * Return: 0 
+ * commandExists - The function takes one argument command which
+ * is the name of the command to check. 
+ * @command: es el nombre del comando que se va a verificar.
+ * Return: Si lo encuentra, devuelve 1; de lo contrario, devuelve 0.
  */
 
 int commandExists(char *command)
