@@ -18,7 +18,6 @@ char **tokenize(char *line)
 	for (i = 0; i < strlen(line); i++)
 	{
 		char readChar = line[i];
-
 		if (readChar == ' ' || readChar == '\n' || readChar == '\t')
 		{
 			token[tokenIndex] = '\0';
@@ -34,7 +33,6 @@ char **tokenize(char *line)
 			token[tokenIndex++] = readChar;
 		}
 	}
-
 	free(token);
 	tokens[tokenNo] = NULL;
 	return tokens;
@@ -43,15 +41,16 @@ char **tokenize(char *line)
 int main(void)
 {
 	char input[MAX_INPUT_SIZE];
-	char **tokens;
+	char **tokens = (char **)malloc(MAX_NUM_TOKENS * sizeof(char *));
 	pid_t child_pid;
 	int status;
 	int i;
-	char *args[MAX_NUM_TOKENS];
+
+
 
 	while (1)
 	{
-		printf("$");
+		printf("$>");
 		if (fgets(input, sizeof(input), stdin) == NULL)
 		{
 			printf("\n");
@@ -65,14 +64,9 @@ int main(void)
 			exit(EXIT_FAILURE);
 		}
 		else if (child_pid == 0)
-		{
+	    {
 			tokens = tokenize(input);
-			for (i = 0; tokens[i] != NULL; i++)
-			{
-				args[i] = tokens[i];
-			}
-			args[i] = NULL;
-			if (execve(args[0], args) == -1)
+			if (execve(tokens[0], tokens, NULL) == -1)
 			{
 				perror("Command execution failed");
 				exit(EXIT_FAILURE);
@@ -86,7 +80,7 @@ int main(void)
 		else
 		{
 			if (waitpid(child_pid, &status, 0) == -1)
-			{
+		    {
 				perror("Wait failed");
 				exit(EXIT_FAILURE);
 			}
@@ -94,3 +88,5 @@ int main(void)
 	}
 	return 0;
 }
+
+
