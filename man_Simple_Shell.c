@@ -1,17 +1,15 @@
-.TH Shell "22 August 2023" "Shell man page"
+.TH Shell(1) "22 August 2023" "Shell man page"
 
 .SH NAME
 .B Simple Shell
 -
 
 .SH SYNOPSIS
-hsh
+.RS hsh
 
 .SH DESCRIPTION
 .B Simple Shell
 - is a command line interface or basic shell that allows users to interact with an operating system. It allows you to enter text commands to perform various tasks, such as managing files, running programs, and configuring settings on a computer system. The "Simple Shell" generally offers a limited set of features compared to more comprehensive command line interfaces, but still allows users to control and operate the computer through commands written in text.
-
-.SH OBJECTIVE
 
 .RS
 Code is intended to create a basic shell environment where users can enter commands, and the program executes them in child processes, providing an experience similar to that of a shell on an operating system.
