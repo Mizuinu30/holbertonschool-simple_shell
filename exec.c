@@ -14,7 +14,7 @@ char *concat_path(char *pathname, char *progname)
 	prog_len = strlen(progname);
 	path_len = strlen(pathname);
 	new_sz = sizeof(char) * (path_len + prog_len + 2);
-	pathname = realloc(pathname, (path_len + 1), new_sz);
+	pathname = realloc(pathname, (path_len + 1) * new_sz);
 	if (!pathname)
 		return (NULL);
 
@@ -32,7 +32,7 @@ char *concat_path(char *pathname, char *progname)
   */
 char *find(char *cname)
 {
-	char *env_path = NULL, **p_tokns = NULL;
+	char *env_path = NULL, **p_tokens = NULL;
 	int i = 0, num_del = 0;
 	struct stat sb;
 
@@ -42,18 +42,18 @@ char *find(char *cname)
 		{
 			env_path = getenv("PATH");
 			num_del = count_delims(env_path, ":") + 1;
-			p_tokns = tokenize(env_path, ":", num_del);
+			p_tokens = tokenize(env_path, ":", num_del);
 
-			while (p_tokns[i])
+			while (p_tokens[i])
 			{
-				p_tokns[i] = concat_path(p_tokns[i], cname);
+				p_tokens[i] = concat_path(p_tokens[i], cname);
 
-				if (stat(p_tokns[i], &sb) == 0)
+				if (stat(p_tokens[i], &sb) == 0)
 				{
 					free(cname);
-					cname = _strdup(p_tokns[i]);
+					cname = strdup(p_tokens[i]);
 					frees_get_env(env_path);
-					frees_tokens(p_tokns);
+					frees_tokens(p_tokens);
 					return (cname);
 				}
 
@@ -79,7 +79,7 @@ char *find(char *cname)
   *
   * Return: A integer status value.
   */
-int exec(char *cname, char **opts)
+int exec(char *cname, char **opts, char **env)
 {
 	pid_t child;
 	int status;
@@ -90,7 +90,8 @@ int exec(char *cname, char **opts)
 			perror("fork failed");
 			return (-1);
 		case 0:
-			execve(cname, opts, environment);
+			execve(cname, opts, env);
+			break;
 		default:
 			do {
 				waitpid(child, &status, WUNTRACED);

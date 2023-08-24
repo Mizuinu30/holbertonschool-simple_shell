@@ -12,7 +12,7 @@ void handle_exit(char **u_tokens, char *line)
 {
 	int status = 0;
 
-	if (u_tokens[1] == NULL (!strcmp(u_tokens[1], "0")))
+	if (u_tokens[1] == NULL || (!strcmp(u_tokens[1], "0")))
 	{
 		frees_tokens(u_tokens);
 		free(line);

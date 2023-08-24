@@ -5,12 +5,14 @@
   *
   * Return: Always zero.
   */
-int main(void)
+int main(int argc, char **argv, char **env)
 {
 	char *line = NULL, **u_tokens = NULL;
 	int w_len = 0, execFlag = 0;
 	size_t line_size = 0;
 	ssize_t line_len = 0;
+	(void) argc;
+	(void) argv;
 
 	while (line_len >= 0)
 	{
@@ -29,12 +31,12 @@ int main(void)
 		if (line[0] != '\n' && w_len > 0)
 		{
 			u_tokens = tokenize(line, " \t", w_len);
-			execFlag = execBuiltInCommands(u_tokens, line);
+			execFlag = execBuiltInCommands(u_tokens, line, env);
 			if (!execFlag)
 			{
-				u_tokns[0] = find(u_tokens[0]);
+				u_tokens[0] = find(u_tokens[0]);
 				if (u_tokens[0] && access(u_tokens[0], X_OK) == 0)
-					exec(u_tokens[0], u_tokens);
+					exec(u_tokens[0], u_tokens, env);
 				else
 					perror("./hsh");
 			}

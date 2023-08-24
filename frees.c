@@ -22,9 +22,9 @@ void frees_get_env(char *env_path)
  *Return: Nothing to returns.
  */
 
-void frees_tokens(char tokens)
+void frees_tokens(char **tokens)
 {
-    char temp = tokens;
+    char **temp = tokens;
 
     if (tokens)
     {

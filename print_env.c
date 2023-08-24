@@ -5,16 +5,16 @@
  * Return: Nothing to returns
  */
 
-void _print_env(void)
+void print_env(char **env)
 {
     int i = 0, j = 0;
 
-    while (environment[i])
+    while (env[i])
     {
         j = 0;
-        while (environment[i][j])
+        while (env[i][j])
         {
-            putchar(environment[i][j]);
+            putchar(env[i][j]);
             j++;
         }
 

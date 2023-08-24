@@ -6,7 +6,7 @@
  * Return: The string without a new line character.
  */
 
-char remove_new_line(charstr)
+char  *remove_new_line(char *str)
 {
     int i = 0;
 

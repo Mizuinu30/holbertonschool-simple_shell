@@ -2,12 +2,12 @@
 
 /**
  * execBuiltInCommands - Executes a built-in command
- * @u_tokns: ...
+ * @u_tokens: ...
  * @line: ...
  *
  * Return: 1 if is a built-in command or 0 if not
  */
-int execBuiltInCommands(char **u_tokns, char *line)
+int execBuiltInCommands(char **u_tokens, char *line, char **env)
 {
     int i = 0;
     char *ListBuiltinCmds[] = { "exit", "cd", "help", "env", NULL };
@@ -23,7 +23,7 @@ int execBuiltInCommands(char **u_tokns, char *line)
             }
             else if (i == 1)
             {
-                chdir(u_tokns[1]);
+                chdir(u_tokens[1]);
                 return (1);
             }
             else if (i == 2)
@@ -33,7 +33,7 @@ int execBuiltInCommands(char **u_tokns, char *line)
             }
             else if (i == 3)
             {
-                print_env();
+                print_env(env);
                 return (1);
             }
             else
