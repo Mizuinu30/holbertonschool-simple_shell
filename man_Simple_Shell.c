@@ -38,21 +38,62 @@ This function takes a string (a line of input) and splits it into individual tok
 
 .SH EXAMPLES
 
-.RS If you enter a valid command (for example, ls), the program should run the command in a child process and display the output of the command. For example: 
+.RS The output in a shell depends on the commands you enter and how the related functions and variables are implemented in the code.
 
-.br shell
-.br $>ls
-.br file1 file2
-.br $>
+    Program start:
 
-.RS If you enter the exit command, the program should end and the exit from the program will simply be a return to the operating system:
+ruby
 
-.br shell
-.br $>exit
-.br $
+($) 
 
-.RS The exact output may vary depending on your system configuration and how it handles signals and errors. 
+    Example of executing an internal command (e.g., ls or cd):
+
+shell
+
+($) ls
+file1 file2 file3
+($) 
+
+    Example of executing an existing and valid external command:
+
+shell
+
+($) echo "Hello, world!"
+Hello, world!
+($) 
+
+    Example of executing an external command not found in the path:
+
+ruby
+
+($) command_not_found
+./hsh: Command not found
+($) 
+
+    Example of executing an external command without execution permissions:
+
+bash
+
+($) ./my_script.sh
+./hsh: ./my_script.sh: Permission denied
+($) 
+
+    If you press Ctrl+C during the execution of a command:
+
+ruby
+
+($) <You press Ctrl+C>
+$
+
+    If you enter an empty command and press Enter:
+
+ruby
+
+($) 
+($) 
+
 
 .SH AUTHORS
 
-.RS Juan Silva / Oscar Morell
+.RS Juan Silva / Oscar Morell:wq
+
