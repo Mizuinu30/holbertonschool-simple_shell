@@ -9,20 +9,20 @@
 
 int count_input(char *str)
 {
-    int cw = 0, state = 0;
+	int cw = 0, state = 0;
 	int i;
-    for (i = 0; str[i]; i++)
-    {
-        if (str[i] == ' ' || str[i] == '\n' || str[i] == '\t')
-            state = 0;
-        else if (state == 0)
-        {
-            state = 1;
-            cw++;
-        }
-    }
+	for (i = 0; str[i]; i++)
+	{
+		if (str[i] == ' ' || str[i] == '\n' || str[i] == '\t')
+			state = 0;
+		else if (state == 0)
+		{
+			state = 1;
+			cw++;
+		}
+	}
 
-    return (cw);
+	return (cw);
 }
 
 /**
@@ -32,21 +32,24 @@ int count_input(char *str)
  *
  * Return: The number of delimiters in the string
  */
-int count_delims(char *str, char *del)
+int count_delims(const char *str, const char *del)
 {
-    int cw = 0;
-	int  i;
+	int count = 0;
 	int j;
+	int i;
 
-    for (i = 0; del[i]; i++)
-    {
-        for (j = 0; str[j]; j++)
-        {
-            if (str[j] == del[i])
-                cw++;
-        }
-    }
+	for (i = 0; str[i]; i++)
+	{
+		for (j = 0; del[j]; j++)
+		{
+			if (str[i] == del[j])
+			{
+				count++;
+				break;
+			}
+		}
+	}
 
-    return (cw);
+	return count;
 }
 

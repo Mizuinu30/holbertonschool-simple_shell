@@ -12,7 +12,7 @@
 
 int main(int argc, char **argv, char **env);
 int count_input(char *str);
-int count_delims(char *str, char *del);
+int count_delims(const char *str, const char *del);
 char *remove_new_line(char *str);
 void signal_handler(int sig_id);
 void open_help(void);

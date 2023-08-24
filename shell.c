@@ -40,11 +40,11 @@ int main(int argc, char **argv, char **env)
 				else
 					perror("./hsh");
 			}
-
+			printf("here?");
 			frees_tokens(u_tokens);
 		}
 	}
-
+	printf("line");
 	free(line);
 	return (0);
 }

@@ -1,102 +1,115 @@
 #include "shell.h"
 
 /**
-  * concat_path - Concatenate a path name and a program name.
-  * @pathname: The path name to concatenate with the program name.
-  * @progname: The program name to place in the path name.
-  *
-  * Return: The path name concatenated with the program name.
-  */
-char *concat_path(char *pathname, char *progname)
+ * concat_path - Concatenate a path name and a program name.
+ * @pathname: The path name to concatenate with the program name.
+ * @progname: The program name to place in the path name.
+ *
+ * Return: The path name concatenated with the program name.
+ */
+
+char *concat_path(const char *pathname, const char *progname)
 {
-	int prog_len = 0, path_len = 0, new_sz = 0;
+	size_t prog_len = strlen(progname);
+	size_t path_len = strlen(pathname);
+	size_t new_sz = path_len + prog_len + 2;
+	char *new_path = realloc((char *)pathname, new_sz);
 
-	prog_len = strlen(progname);
-	path_len = strlen(pathname);
-	new_sz = sizeof(char) * (path_len + prog_len + 2);
-	pathname = realloc(pathname, (path_len + 1) * new_sz);
-	if (!pathname)
+	if (!new_path)
+	{
+		perror("realloc failed");
 		return (NULL);
+	}
 
-	strcat(pathname, "/");
-	strcat(pathname, progname);
+	snprintf(new_path + path_len, new_sz - path_len, "/%s", progname);
 
-	return (pathname);
+	return (new_path);
 }
 
 /**
-  * find - Verify if a command is found in the system.
-  * @cname: The command name to find in the system.
-  *
-  * Return: The path name of the command found or NULL if failed.
-  */
+ * find - Verify if a command is found in the system.
+ * @cname: The command name to find in the system.
+ *
+ * Return: The path name of the command found or NULL if failed.
+ */
+
 char *find(char *cname)
 {
-	char *env_path = NULL, **p_tokens = NULL;
-	int i = 0, num_del = 0;
 	struct stat sb;
+	int i;
 
-	if (cname)
+	if (!cname)
 	{
-		if (stat(cname, &sb) != 0 && cname[0] != '/')
-		{
-			env_path = getenv("PATH");
-			num_del = count_delims(env_path, ":") + 1;
-			p_tokens = tokenize(env_path, ":", num_del);
-
-			while (p_tokens[i])
-			{
-				p_tokens[i] = concat_path(p_tokens[i], cname);
-
-				if (stat(p_tokens[i], &sb) == 0)
-				{
-					free(cname);
-					cname = strdup(p_tokens[i]);
-					frees_get_env(env_path);
-					frees_tokens(p_tokens);
-					return (cname);
-				}
-
-				i++;
-			}
-
-			frees_get_env(env_path);
-			frees_tokens(p_tokens);
-		}
-
-		if (stat(cname, &sb) == 0)
-			return (cname);
+		return (NULL);
 	}
 
+	if (stat(cname, &sb) == 0)
+	{
+		return (cname);
+	}
+
+	if (cname[0] != '/')
+	{
+		char *env_path = getenv("PATH");
+		int num_del = count_delims(env_path, ":");
+		char **p_tokens = tokenize(env_path, ":", num_del);
+
+		for (i = 0; i < num_del; i++) 
+		{
+			char *full_path = concat_path(p_tokens[i], cname);
+
+			if (stat(full_path, &sb) == 0)
+			{
+				free(cname);
+				frees_tokens(p_tokens);
+				return (full_path);
+			}
+
+			free(full_path);
+		}
+		frees_tokens(p_tokens);
+	}
 	free(cname);
 	return (NULL);
 }
 
 /**
-  * exec - Executes a command.
-  * @cname: The command to execute.
-  * @opts: The options or flags to the command.
-  *
-  * Return: A integer status value.
-  */
-int exec(char *cname, char **opts, char **env)
+ * exec - Executes a command.
+ * @cname: The command to execute.
+ * @opts: The options or flags to the command.
+ *
+ * Return: A integer status value.
+ */
+int exec(char *cname, char **opts, char **env) 
 {
 	pid_t child;
 	int status;
 
-	switch (child = fork())
+	child = fork();
+	if (child == -1)
 	{
-		case -1:
-			perror("fork failed");
-			return (-1);
-		case 0:
-			execve(cname, opts, env);
-			break;
-		default:
-			do {
-				waitpid(child, &status, WUNTRACED);
-			} while (WIFEXITED(status) == 0 && WIFSIGNALED(status) == 0);
+		perror("fork failed");
+		return (-1);
 	}
+    else if (child == 0)
+	{
+		execve(cname, opts, env);
+		perror("execve failed");
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		waitpid(child, &status, 0);
 
-	return (0);
+		if (WIFEXITED(status))
+		{
+			return WEXITSTATUS(status);
+		}
+		else
+		{
+			perror("Child process didn't exit normally");
+			return (-1);
+		}
+	}
 }
+

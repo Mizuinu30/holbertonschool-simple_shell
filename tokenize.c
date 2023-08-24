@@ -8,6 +8,7 @@
   *
   * Return: An array of tokens of the string
   */
+
 char **tokenize(char *str, char *del, int len)
 {
 	char **tokens = NULL, *token = NULL, *temp = NULL;
@@ -29,6 +30,7 @@ char **tokenize(char *str, char *del, int len)
 	}
 
 	tokens[i] = NULL;
+	printf("temp");
 	free(temp);
 	return (tokens);
 }

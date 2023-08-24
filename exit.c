@@ -15,6 +15,7 @@ void handle_exit(char **u_tokens, char *line)
 	if (u_tokens[1] == NULL || (!strcmp(u_tokens[1], "0")))
 	{
 		frees_tokens(u_tokens);
+		printf("line1");
 		free(line);
 		exit(0);
 	}
@@ -22,6 +23,7 @@ void handle_exit(char **u_tokens, char *line)
 	if (status != 0)
 	{
 		frees_tokens(u_tokens);
+		printf("line2");
 		free(line);
 		exit(status);
 	}
@@ -33,6 +35,7 @@ void handle_exit(char **u_tokens, char *line)
 		exit(2);
 	}
 	frees_tokens(u_tokens);
+	printf("line3");
 	free(line);
 	exit(EXIT_SUCCESS);
 }

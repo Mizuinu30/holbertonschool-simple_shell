@@ -8,12 +8,16 @@
 
 void frees_get_env(char *env_path)
 {
-    int i;
-
-    for (i = 4; i >= 0; i--)
-        env_path--;
-
-    free(env_path);
+    if (env_path != NULL)
+    {
+        printf("before free\n");
+        free(env_path);
+        printf("after free\n");
+    }
+    else
+    {
+        printf("env_path is NULL\n");
+    }
 }
 
 /**
@@ -28,9 +32,13 @@ void frees_tokens(char **tokens)
 
     if (tokens)
     {
-        while (tokens)
-            free(tokens++);
-
+        while (*tokens)
+        {
+            printf("inside while");
+            free(*tokens);
+            tokens++;
+        }
         free(temp);
     }
 }
+
