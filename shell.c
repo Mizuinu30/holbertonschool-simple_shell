@@ -1,85 +1,48 @@
 #include "shell.h"
 
-#define MAX_INPUT_SIZE 1024
-#define MAX_TOKEN_SIZE 64
-#define MAX_NUM_TOKENS 64
-
-char **tokenize(char *line)
-{
-    char **tokens = (char **)malloc(MAX_NUM_TOKENS * sizeof(char *));
-    char *token = (char *)malloc(MAX_TOKEN_SIZE * sizeof(char));
-    long unsigned int i, tokenIndex = 0, tokenNo = 0;
-
-    for (i = 0; i < strlen(line); i++)
-    {
-        char readChar = line[i];
-        if (readChar == ' ' || readChar == '\n' || readChar == '\t')
-        {
-            token[tokenIndex] = '\0';
-            if (tokenIndex != 0)
-            {
-                tokens[tokenNo] = (char *)malloc(MAX_TOKEN_SIZE * sizeof(char));
-                strcpy(tokens[tokenNo++], token);
-                tokenIndex = 0;
-            }
-        }
-        else
-        {
-            token[tokenIndex++] = readChar;
-        }
-    }
-    token[tokenIndex] = '\0';
-    tokens[tokenNo] = NULL;
-    free(token);
-    return (tokens);
-}
-
+/**
+  * main - Entry point to the Shell
+  *
+  * Return: Always zero.
+  */
 int main(void)
 {
-    char input[MAX_INPUT_SIZE];
-    char **tokens;
-    pid_t child_pid;
-    int status;
-	int i;
-    while (1)
-    {
-        printf("$ ");
-        if (fgets(input, sizeof(input), stdin) == NULL)
-        {
-            printf("\n");
-            break;
-        }
-        input[strcspn(input, "\n")] = '\0';
-        child_pid = fork();
-        if (child_pid == -1)
-        {
-            perror("Fork failed");
-            exit(EXIT_FAILURE);
-        }
-        else if (child_pid == 0)
-        {
-            tokens = tokenize(input);
-            if (execvp(tokens[0], tokens) == -1)
-            {
-                perror("Command execution failed");
-                exit(EXIT_FAILURE);
-            }
-            for (i = 0; tokens[i] != NULL; i++)
-            {
-                free(tokens[i]);
-            }
-            free(tokens);
-        }
-        else
-        {
-            if (waitpid(child_pid, &status, 0) == -1)
-            {
-                perror("Wait failed");
-                exit(EXIT_FAILURE);
-            }
-        }
-    }
-    return (0);
+	char *line = NULL, **u_tokens = NULL;
+	int w_len = 0, execFlag = 0;
+	size_t line_size = 0;
+	ssize_t line_len = 0;
+
+	while (line_len >= 0)
+	{
+		signal(SIGINT, signal_handler);
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, "($) ", 4);
+		line_len = getline(&line, &line_size, stdin);
+		if (line_len == -1)
+		{
+			if (isatty(STDIN_FILENO))
+				write(STDOUT_FILENO, "\n", 1);
+			break;
+		}
+
+		w_len = count_input(line);
+		if (line[0] != '\n' && w_len > 0)
+		{
+			u_tokens = tokenize(line, " \t", w_len);
+			execFlag = execBuiltInCommands(u_tokens, line);
+			if (!execFlag)
+			{
+				u_tokns[0] = find(u_tokens[0]);
+				if (u_tokens[0] && access(u_tokens[0], X_OK) == 0)
+					exec(u_tokens[0], u_tokens);
+				else
+					perror("./hsh");
+			}
+
+			frees_tokens(u_tokens);
+		}
+	}
+
+	free(line);
+	return (0);
 }
-
-
