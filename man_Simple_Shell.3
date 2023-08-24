@@ -1,17 +1,15 @@
-.TH Shell "22 August 2023" "Shell man page"
+.TH Shell(1) "22 August 2023" "Shell man page"
 
 .SH NAME
 .B Simple Shell
 -
 
 .SH SYNOPSIS
-hsh
+.RS hsh
 
 .SH DESCRIPTION
 .B Simple Shell
 - is a command line interface or basic shell that allows users to interact with an operating system. It allows you to enter text commands to perform various tasks, such as managing files, running programs, and configuring settings on a computer system. The "Simple Shell" generally offers a limited set of features compared to more comprehensive command line interfaces, but still allows users to control and operate the computer through commands written in text.
-
-.SH OBJECTIVE
 
 .RS
 Code is intended to create a basic shell environment where users can enter commands, and the program executes them in child processes, providing an experience similar to that of a shell on an operating system.
@@ -40,21 +38,62 @@ This function takes a string (a line of input) and splits it into individual tok
 
 .SH EXAMPLES
 
-.RS If you enter a valid command (for example, ls), the program should run the command in a child process and display the output of the command. For example: 
+.RS The output in a shell depends on the commands you enter and how the related functions and variables are implemented in the code.
 
-.br shell
-.br $>ls
-.br file1 file2
-.br $>
+    Program start:
 
-.RS If you enter the exit command, the program should end and the exit from the program will simply be a return to the operating system:
+ruby
 
-.br shell
-.br $>exit
-.br $
+($) 
 
-.RS The exact output may vary depending on your system configuration and how it handles signals and errors. 
+    Example of executing an internal command (e.g., ls or cd):
+
+shell
+
+($) ls
+file1 file2 file3
+($) 
+
+    Example of executing an existing and valid external command:
+
+shell
+
+($) echo "Hello, world!"
+Hello, world!
+($) 
+
+    Example of executing an external command not found in the path:
+
+ruby
+
+($) command_not_found
+./hsh: Command not found
+($) 
+
+    Example of executing an external command without execution permissions:
+
+bash
+
+($) ./my_script.sh
+./hsh: ./my_script.sh: Permission denied
+($) 
+
+    If you press Ctrl+C during the execution of a command:
+
+ruby
+
+($) <You press Ctrl+C>
+$
+
+    If you enter an empty command and press Enter:
+
+ruby
+
+($) 
+($) 
+
 
 .SH AUTHORS
 
-.RS Juan Silva / Oscar Morell
+.RS Juan Silva / Oscar Morell:wq
+

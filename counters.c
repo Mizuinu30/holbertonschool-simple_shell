@@ -10,8 +10,8 @@
 int count_input(char *str)
 {
     int cw = 0, state = 0;
-
-    for (int i = 0; str[i]; i++)
+	int i;
+    for (i = 0; str[i]; i++)
     {
         if (str[i] == ' ' || str[i] == '\n' || str[i] == '\t')
             state = 0;
@@ -35,10 +35,12 @@ int count_input(char *str)
 int count_delims(char *str, char *del)
 {
     int cw = 0;
+	int  i;
+	int j;
 
-    for (int i = 0; del[i]; i++)
+    for (i = 0; del[i]; i++)
     {
-        for (int j = 0; str[j]; j++)
+        for (j = 0; str[j]; j++)
         {
             if (str[j] == del[i])
                 cw++;
