@@ -1,25 +1,24 @@
 #include "shell.h"
 
 /**
-  * _print_env - Prints the environment built-in
+  * _print_env - Prints the environment built-in.
   *
-  * Return: Nothing to returns
+  * Return: Nothing.
   */
 void _print_env(void)
 {
-	int i = 0, j = 0;
+	int i;
+	int j;
 
-	while (environ[i])
-	{
-		j = 0;
-		while (environ[i][j])
-		{
-			_putchar(environ[i][j]);
-			j++;
-		}
+    for (i = 0; environ[i] != NULL; i++)
+    {
+        for (j = 0; environ[i][j] != '\0'; j++)
+        {
+            _putchar(environ[i][j]);
+        }
 
-		if (j != 0)
-			_putchar('\n');
-		i++;
-	}
+        if (environ[i][0] != '\0')
+            _putchar('\n');
+    }
 }
+
