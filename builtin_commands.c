@@ -2,48 +2,40 @@
 
 /**
  * execBuiltInCommands - Executes a built-in command
- * @u_tokens: ...
+ * @u_tokns: ...
  * @line: ...
  *
  * Return: 1 if is a built-in command or 0 if not
  */
-int execBuiltInCommands(char **u_tokens, char *line, char **env)
+int execBuiltInCommands(char **u_tokns, char *line)
 {
-    int i = 0;
-    char *ListBuiltinCmds[] = { "exit", "cd", "help", "env", NULL };
+	int i = 0;
+	char *ListBuiltinCmds[] = { "exit", "cd", "help", "env", NULL };
 
-    while (ListBuiltinCmds[i])
-    {
-        if (strcmp(u_tokens[0], ListBuiltinCmds[i]) == 0)
-        {
-            if (i == 0)
-            {
-                handle_exit(u_tokens, line);
-                return (1);
-            }
-            else if (i == 1)
-            {
-                chdir(u_tokens[1]);
-                return (1);
-            }
-            else if (i == 2)
-            {
-                open_help();
-                return (1);
-            }
-            else if (i == 3)
-            {
-                print_env(env);
-                return (1);
-            }
-            else
-            {
-                break;
-            }
-        }
-        i++;
-    }
+	while (ListBuiltinCmds[i])
+	{
+		if (_strcmp(u_tokns[0], ListBuiltinCmds[i]) == 0)
+		{
+			switch (i)
+			{
+				case 0:
+					_handle_exit(u_tokns, line);
+					break;
+				case 1:
+					chdir(u_tokns[1]);
+					return (1);
+				case 2:
+					_open_help();
+					return (1);
+				case 3:
+					_print_env();
+					return (1);
+				default:
+					break;
+			}
+		}
+		i++;
+	}
 
-    return (0);
+	return (0);
 }
-

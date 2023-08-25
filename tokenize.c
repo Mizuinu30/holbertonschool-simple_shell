@@ -1,14 +1,13 @@
 #include "shell.h"
 
 /**
-  * tokenize - Extract tokens from string.
-  * @str: The string to tokenize.
-  * @del: The delimiter of tokenization.
-  * @len: Tokens number.
+  * tokenize - Extract tokens from string
+  * @str: The string to tokenize
+  * @del: The delimiter of tokenization
+  * @len: Tokens number
   *
   * Return: An array of tokens of the string
   */
-
 char **tokenize(char *str, char *del, int len)
 {
 	char **tokens = NULL, *token = NULL, *temp = NULL;
@@ -19,18 +18,17 @@ char **tokenize(char *str, char *del, int len)
 		return (NULL);
 
 	str = remove_new_line(str);
-	temp = strdup(str);
+	temp = _strdup(str);
 	token = strtok(temp, del);
 
 	while (token)
 	{
-		tokens[i] = strdup(token);
+		tokens[i] = _strdup(token);
 		token = strtok(NULL, del);
 		i++;
 	}
 
 	tokens[i] = NULL;
-	printf("temp");
 	free(temp);
 	return (tokens);
 }

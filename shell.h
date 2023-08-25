@@ -10,18 +10,29 @@
 #include <signal.h>
 #include <stdio.h>
 
-int main(int argc, char **argv, char **env);
+extern char **environ;
+
+char *_strcat(char *dest, char *src);
+int _strlen(const char *s);
+int _strcmp(char *s1, char *s2);
+int _strncmp(const char *s1, const char *s2, size_t len);
+char *_strdup(char *str);
+int _atoi(char *s);
+int _putchar(char c);
+void _puts(char *str);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 int count_input(char *str);
-int count_delims(const char *str, const char *del);
+int count_delims(char *str, char *del);
 char *remove_new_line(char *str);
 void signal_handler(int sig_id);
-void open_help(void);
-void print_env(char **env);
-void handle_exit(char **u_tokens, char *line);
-int execBuiltInCommands(char **u_tokens, char *line, char **env);
+void _open_help(void);
+void _print_env(void);
+void _handle_exit(char **u_tokns, char *line);
+int execBuiltInCommands(char **u_tokns, char *line);
 void frees_get_env(char *env_path);
-void frees_tokens(char **tokens);
-int exec(char *cname, char **opts, char **env);
+void frees_tokens(char **tokns);
+int exec(char *cname, char **opts);
+char *_getenv(const char *name);
 char **tokenize(char *str, char *del, int len);
 char *find(char *cname);
 
