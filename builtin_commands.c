@@ -37,5 +37,5 @@ int execBuiltInCommands(char **u_tokns, char *line)
 		i++;
 	}
 
-	return (2);
+	return (0);
 }
