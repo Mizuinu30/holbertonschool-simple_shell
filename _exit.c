@@ -34,5 +34,5 @@ void _handle_exit(char **u_tokns, char *line)
 
 	frees_tokens(u_tokns);
 	free(line);
-	exit(EXIT_SUCCESS);
+	exit(2);
 }
