@@ -6,16 +6,17 @@
   *
   * Return: The string without a new line character
   */
+
 char *remove_new_line(char *str)
 {
-	int i = 0;
+	int i;
 
-	while (str[i])
+	for (i = 0; str[i] != '\0'; i++)
 	{
 		if (str[i] == '\n')
 			str[i] = '\0';
-		i++;
 	}
 
 	return (str);
 }
+

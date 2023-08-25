@@ -7,5 +7,5 @@
  */
 void _open_help(void)
 {
-	_puts("\n***WELCOME TO THE SHELL HELP***\n");
+	_puts("\n***YOU HAVE REACHED THE HELP DESK ***\n");
 }
